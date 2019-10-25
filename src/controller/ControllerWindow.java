@@ -2,14 +2,12 @@ package controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -17,8 +15,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import modelo.Buscaminas;
+import modelo.Casilla;
 
 public class ControllerWindow implements Initializable {
+	
+	private Buscaminas minesweeper;
 	
 	@FXML
 	private BorderPane pane;
@@ -28,9 +29,6 @@ public class ControllerWindow implements Initializable {
 	private ChoiceBox<String> choice;
 	@FXML
 	private Button play;
-	
-	private GridPane grid;
-	private Button square;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -48,18 +46,15 @@ public class ControllerWindow implements Initializable {
 		
 		if(choice.getValue().equals("Easy")) {
 			
-			clearScene();
-			loadBoard(Buscaminas.FILAS_PRINCIPIANTE, Buscaminas.COLUMNAS_PRINCIPIANTE);
+			loadBoard(Buscaminas.FILAS_PRINCIPIANTE, Buscaminas.COLUMNAS_PRINCIPIANTE, Buscaminas.PRINCIPIANTE);
 		}
 		else if(choice.getValue().equals("Medium")) {
 			
-			clearScene();
-			loadBoard(Buscaminas.FILAS_INTERMEDIO, Buscaminas.COLUMNAS_INTERMEDIO);
+			loadBoard(Buscaminas.FILAS_INTERMEDIO, Buscaminas.COLUMNAS_INTERMEDIO, Buscaminas.INTERMEDIO);
 		}
 		else {
 			
-			clearScene();
-			loadBoard(Buscaminas.FILAS_EXPERTO, Buscaminas.COLUMNAS_EXPERTO);
+			loadBoard(Buscaminas.FILAS_EXPERTO, Buscaminas.COLUMNAS_EXPERTO, Buscaminas.EXPERTO);
 		}
 	}
 	
@@ -69,10 +64,27 @@ public class ControllerWindow implements Initializable {
 		
 	}
 	
-	public void loadBoard(int rows, int columns) {
-			
-		grid = new GridPane();	
+	public void loadButtons() {
+		
+		ToolBar toolBarClue = new ToolBar();
+		Button solve = new Button();
+		solve.setText("SOLVE THE GAME");
+		Button clue = new Button();
+		clue.setText("GIVE A CLUE");
+		toolBarClue.getItems().add(clue);
+		toolBarClue.getItems().add(solve);
+		pane.setTop(toolBarClue);
+	}
+	
+	public void loadBoard(int rows, int columns, int dificcult) {
+		
+		loadButtons();
+		
+		GridPane grid = new GridPane();	
 		pane.setCenter(grid);
+		
+		minesweeper = new Buscaminas(dificcult);
+		Casilla [][] squares = minesweeper.darCasillas();
 
 		for(int i = 0; i < columns; i++) {
 			
@@ -92,10 +104,11 @@ public class ControllerWindow implements Initializable {
 			
 			for(int j = 0; j < rows; j++) {
 				
-				square = new Button();
+				Button square = new Button();
 				square.setMaxWidth(Double.MAX_VALUE);
 				square.setMaxHeight(Double.MAX_VALUE);
-				grid.add(square, i, j);
+				square.setText(squares[j][i].mostrarValorCasilla());
+				grid.add(square, i, j);	
 			}
 		}
 	}
