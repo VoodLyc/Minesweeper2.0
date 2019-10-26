@@ -63,21 +63,33 @@ public class ControllerWindow implements Initializable {
 		}
 	}
 	
-	public void loadButtons() {
+	public void loadButtons(int rows, int columns, int difficulty) {
 		
 		ToolBar toolBar = new ToolBar();
-		Button solve = new Button();
-		solve.setText("SOLVE THE GAME");
-		Button clue = new Button();
-		clue.setText("GIVE A CLUE");
+		
+		Button solve = new Button("SOLVE THE GAME");
+		solve.setOnAction(event -> solve(rows, columns));
+		
+		Button clue = new Button("GIVE A CLUE");
+		clue.setOnAction(event -> giveClue(rows, columns, difficulty));
+		
+		Button back = new Button("RETURN TO MENU");
+		back.setOnAction(event -> backToMenu());
+		
+		Button restart = new Button("RESTART THE GAME");
+		restart.setOnAction(event -> restartGame(rows, columns, difficulty));
+		
 		toolBar.getItems().add(clue);
 		toolBar.getItems().add(solve);
+		toolBar.getItems().add(restart);
+		toolBar.getItems().add(back);
+		
 		pane.setTop(toolBar);
 	}
 	
 	public void loadBoard(int rows, int columns, int difficulty) {
 		
-		loadButtons();
+		loadButtons(rows, columns, difficulty);
 		
 		grid = new GridPane();
 		pane.setCenter(grid);
@@ -102,16 +114,67 @@ public class ControllerWindow implements Initializable {
 			
 			for(int j = 0; j < rows; j++) {
 				
-				Button square = new Button();
+				Button square = new Button(minesweeper.getSquare(j, i).mostrarValorCasilla());
 				square.setMaxWidth(Double.MAX_VALUE);
 				square.setMaxHeight(Double.MAX_VALUE);
-				square.setText(minesweeper.getSquare(j, i).mostrarValorCasilla());
 				int x = j;
 				int y = i;
 				square.setOnAction(event -> {openSquare(x,y,difficulty); square.setText(minesweeper.getSquare(x,y).mostrarValorCasilla());});
 				grid.add(square, i, j);
 			}
 		}
+	}
+	
+	public void solve(int rows, int columns) {
+		
+		ButtonType solve = new ButtonType("Solve", ButtonBar.ButtonData.OK_DONE);
+		ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+		Alert alert = new Alert(AlertType.WARNING, "The game will end, are you sure?", solve, cancel);
+		alert.setHeaderText(null);
+		alert.setTitle(null);
+		
+		Optional <ButtonType> action = alert.showAndWait();
+		
+		if(action.get() == solve) {
+			
+			minesweeper.resolver();
+			
+			grid = new GridPane();
+			pane.setCenter(grid);
+			
+			for(int i = 0; i < columns; i++) {
+				
+				ColumnConstraints column = new ColumnConstraints();
+				column.setHgrow(Priority.ALWAYS);
+				grid.getColumnConstraints().add(column);
+			}
+			
+			for(int i = 0; i < rows; i++) {
+				
+				RowConstraints row = new RowConstraints();
+				row.setVgrow(Priority.ALWAYS);
+				grid.getRowConstraints().add(row);
+			}
+			
+			for(int i = 0; i < columns; i++) {
+				
+				for(int j = 0; j < rows; j++) {
+					
+					Button square = new Button(minesweeper.getSquare(j, i).mostrarValorCasilla());
+					square.setMaxWidth(Double.MAX_VALUE);
+					square.setMaxHeight(Double.MAX_VALUE);
+					square.setOnAction(event -> loadMenu());
+					grid.add(square, i, j);
+				}
+			}
+		}	
+	}
+	
+	public void loadMenu() {
+		
+		pane.setCenter(box);
+		pane.setTop(null);
+		choice.getSelectionModel().select(0);
 	}
 	
 	public void openSquare(int x, int y, int difficulty) {
@@ -122,7 +185,7 @@ public class ControllerWindow implements Initializable {
 			
 			ButtonType again = new ButtonType("Play again", ButtonBar.ButtonData.OK_DONE);
 			ButtonType menu = new ButtonType("Return to menu", ButtonBar.ButtonData.CANCEL_CLOSE);
-			Alert alert = new Alert(AlertType.CONFIRMATION, "You lost! do you want to play again?", again, menu);
+			Alert alert = new Alert(AlertType.INFORMATION, "You lost! do you want to play again?", again, menu);
 			alert.setHeaderText(null);
 			alert.setTitle(null);
 			
@@ -145,9 +208,82 @@ public class ControllerWindow implements Initializable {
 			}
 			else {
 				
-				pane.setCenter(box);
-				pane.setTop(null);
-				choice.getSelectionModel().select(0);
+				loadMenu();
+			}
+		}
+	}
+	
+	public void restartGame(int rows, int columns, int difficulty) {
+		
+		ButtonType accept = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
+		ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+		Alert alert = new Alert(AlertType.WARNING, "All current progress will be lost, are you sure?", accept, cancel);
+		alert.setTitle(null);
+		alert.setHeaderText(null);
+		Optional <ButtonType> action = alert.showAndWait();
+		
+		if(action.get() == accept) {
+			
+			loadBoard(rows, columns, difficulty);
+		}	
+	}
+	
+	public void backToMenu() {
+		
+		ButtonType accept = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
+		ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+		Alert alert = new Alert(AlertType.WARNING, "All current progress will be lost, are you sure?", accept, cancel);
+		alert.setTitle(null);
+		alert.setHeaderText(null);
+		Optional <ButtonType> action = alert.showAndWait();
+		
+		if(action.get() == accept) {
+			
+			loadMenu();
+		}
+	}
+	
+	public void giveClue(int rows, int columns, int difficulty) {
+		
+		if(minesweeper.darPista().equals("")) {
+			
+			ButtonType accept = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
+			Alert alert = new Alert(AlertType.INFORMATION, "There are no clues to give", accept);
+			alert.setTitle(null);
+			alert.setHeaderText(null);
+			alert.show();
+		}
+		else {
+			
+			grid = new GridPane();
+			pane.setCenter(grid);
+
+			for(int i = 0; i < columns; i++) {
+				
+				ColumnConstraints column = new ColumnConstraints();
+				column.setHgrow(Priority.ALWAYS);
+				grid.getColumnConstraints().add(column);
+			}
+			
+			for(int i = 0; i < rows; i++) {
+				
+				RowConstraints row = new RowConstraints();
+				row.setVgrow(Priority.ALWAYS);
+				grid.getRowConstraints().add(row);
+			}
+			
+			for(int i = 0; i < columns; i++) {
+				
+				for(int j = 0; j < rows; j++) {
+					
+					Button square = new Button(minesweeper.getSquare(j, i).mostrarValorCasilla());
+					square.setMaxWidth(Double.MAX_VALUE);
+					square.setMaxHeight(Double.MAX_VALUE);
+					int x = j;
+					int y = i;
+					square.setOnAction(event -> {openSquare(x,y,difficulty); square.setText(minesweeper.getSquare(x,y).mostrarValorCasilla());});
+					grid.add(square, i, j);
+				}
 			}
 		}
 	}

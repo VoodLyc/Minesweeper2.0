@@ -380,7 +380,7 @@ public class Buscaminas {
 	 */
 	public String darPista() {
 
-		String msg = "No hay pistas para dar";
+		String msg = "";
 		boolean running = true;
 
 		for(int x = 0; x < casillas.length && running == true; x++){
@@ -389,7 +389,7 @@ public class Buscaminas {
 				if(casillas[x][y].esMina() != true && casillas[x][y].darSeleccionada() == false && casillas[x][y].darValor() > 0){
 
 					casillas[x][y].destapar();
-					msg = "" + x + y;
+					msg = "Se abrio la casilla (" + (x+1) + ")"+ "(" + (y+1) + ")";
 					running = false;
 				}
 			}
