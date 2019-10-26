@@ -389,7 +389,7 @@ public class Buscaminas {
 				if(casillas[x][y].esMina() != true && casillas[x][y].darSeleccionada() == false && casillas[x][y].darValor() > 0){
 
 					casillas[x][y].destapar();
-					msg = "Se abrio la casilla: " + "("+ (x+1) + " , " + (y+1) + ")";
+					msg = "" + x + y;
 					running = false;
 				}
 			}
@@ -404,5 +404,10 @@ public class Buscaminas {
 	 */
 	public boolean darPerdio(){
 		return perdio;
+	}
+	
+	public Casilla getSquare(int x, int y) {
+		
+		return casillas[x][y];
 	}
 }
