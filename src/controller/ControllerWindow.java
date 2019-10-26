@@ -177,6 +177,23 @@ public class ControllerWindow implements Initializable {
 		choice.getSelectionModel().select(0);
 	}
 	
+	public void startNewGame(int difficulty) {
+		
+		if(difficulty == 1) {
+			
+			loadBoard(Buscaminas.FILAS_PRINCIPIANTE, Buscaminas.COLUMNAS_PRINCIPIANTE, Buscaminas.PRINCIPIANTE);
+		}
+		else if(difficulty == 2) {
+			
+			loadBoard(Buscaminas.FILAS_INTERMEDIO, Buscaminas.COLUMNAS_INTERMEDIO, Buscaminas.INTERMEDIO);
+		}
+		else {
+			
+			loadBoard(Buscaminas.FILAS_EXPERTO, Buscaminas.COLUMNAS_EXPERTO, Buscaminas.EXPERTO);
+		}
+		
+	}
+	
 	public void openSquare(int x, int y, int difficulty) {
 		
 		minesweeper.abrirCasilla(x, y);
@@ -193,23 +210,33 @@ public class ControllerWindow implements Initializable {
 			
 			if(action.get() == again) {
 				
-				if(difficulty == 1) {
-					
-					loadBoard(Buscaminas.FILAS_PRINCIPIANTE, Buscaminas.COLUMNAS_PRINCIPIANTE, Buscaminas.PRINCIPIANTE);
-				}
-				else if(difficulty == 2) {
-					
-					loadBoard(Buscaminas.FILAS_INTERMEDIO, Buscaminas.COLUMNAS_INTERMEDIO, Buscaminas.INTERMEDIO);
-				}
-				else {
-					
-					loadBoard(Buscaminas.FILAS_EXPERTO, Buscaminas.COLUMNAS_EXPERTO, Buscaminas.EXPERTO);
-				}
+				startNewGame(difficulty);
 			}
 			else {
 				
 				loadMenu();
 			}
+		}
+		
+		if(minesweeper.gano()) {
+			
+			ButtonType again = new ButtonType("Play again", ButtonBar.ButtonData.OK_DONE);
+			ButtonType menu = new ButtonType("Return to menu", ButtonBar.ButtonData.CANCEL_CLOSE);
+			Alert alert = new Alert(AlertType.INFORMATION, "You win! do you want to play again?", again, menu);
+			alert.setHeaderText(null);
+			alert.setTitle(null);
+			
+			Optional <ButtonType> action = alert.showAndWait();
+			
+			if(action.get() == again) {
+				
+				startNewGame(difficulty);
+			}
+			else {
+				
+				loadMenu();
+			}
+			
 		}
 	}
 	
