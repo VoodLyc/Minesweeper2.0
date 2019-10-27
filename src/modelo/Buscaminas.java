@@ -91,7 +91,7 @@ public class Buscaminas {
 	 * Atributo que representa si el usuario perdio al abrir una mina
 	 */
 	private boolean perdio;
-
+	
 	// -----------------------------------------------------------------
 	// Constructores
 	// -----------------------------------------------------------------
@@ -389,6 +389,7 @@ public class Buscaminas {
 				if(casillas[x][y].esMina() != true && casillas[x][y].darSeleccionada() == false && casillas[x][y].darValor() > 0){
 
 					casillas[x][y].destapar();
+					unmarkSquare(x,y);
 					msg = "Se abrio la casilla (" + (x+1) + ")"+ "(" + (y+1) + ")";
 					running = false;
 				}
@@ -396,6 +397,28 @@ public class Buscaminas {
 		}
 
 		return msg;
+	}
+	
+	/**
+	 * This method allows marking a square.
+	 * @param x The column number.
+	 * @param y The row number.
+	 */
+	
+	public void markSquare(int x, int y) {
+		
+		casillas[x][y].setMarked(true);
+	}
+	
+	/**
+	 * This method allows unmarking a square.
+	 * @param x The column number.
+	 * @param y The row number.
+	 */
+	
+	public void unmarkSquare(int x, int y) {
+		
+		casillas[x][y].setMarked(false);
 	}
 	
 	/***

@@ -36,6 +36,11 @@ public class Casilla {
 	 * Atributo que indica la cantidad de minas que tiene alrededor una casilla.
 	 */
 	private int valor;
+	
+	/**
+	 * Attribute that represent if a square was marked
+	 */
+	private boolean marked;
 
 	 // -----------------------------------------------------------------
     // Constructores
@@ -63,6 +68,7 @@ public class Casilla {
 		}
 		seleccionada = false;
 		valor = -1;
+		marked = false;
 	}
 	
 
@@ -76,6 +82,16 @@ public class Casilla {
 	 */
 	public void modificarValor(int valor){
 		this.valor = valor;
+	}
+	
+	/**
+	 * This method allows changing the attribute marked
+	 * @param marked The new value of marked
+	 */
+	
+	public void setMarked(boolean marked) {
+		
+		this.marked = marked;
 	}
 	
 	/**
@@ -144,6 +160,16 @@ public class Casilla {
 	public int getTipo(){
 
 		return tipo;
+	}
+	
+	/**
+	* This method allows getting the attribute marked.
+	* @return the attribute marked.
+	*/
+	
+	public boolean getMarked(){
+
+		return marked;
 	}
 	
 }
