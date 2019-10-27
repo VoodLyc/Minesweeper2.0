@@ -403,11 +403,19 @@ public class Buscaminas {
 	 * This method allows marking a square.
 	 * @param x The column number.
 	 * @param y The row number.
+	 * @throws AlreadySelectedException If the square was already selected.
 	 */
 	
-	public void markSquare(int x, int y) {
+	public void markSquare(int x, int y) throws AlreadySelectedException {
 		
-		casillas[x][y].setMarked(true);
+		if(!casillas[x][y].darSeleccionada()) {
+			
+			casillas[x][y].setMarked(true);
+		}
+		else {
+			
+			throw new AlreadySelectedException();
+		}
 	}
 	
 	/**

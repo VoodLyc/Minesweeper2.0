@@ -21,6 +21,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import modelo.AlreadySelectedException;
 import modelo.Buscaminas;
 
 public class ControllerWindow implements Initializable {
@@ -78,7 +79,7 @@ public class ControllerWindow implements Initializable {
 		Button back = new Button("RETURN TO MENU");
 		back.setOnAction(event -> backToMenu());
 		
-		Button restart = new Button("RESTART THE GAME");
+		Button restart = new Button("NEW GAME");
 		restart.setOnAction(event -> restartGame(rows, columns, difficulty));
 		
 		toolBar.getItems().add(clue);
@@ -215,24 +216,28 @@ public class ControllerWindow implements Initializable {
 		}
 		else if(mouse == MouseButton.SECONDARY) {
 			
-			if(!minesweeper.getSquare(x, y).darSeleccionada()) {
+			if(minesweeper.getSquare(x, y).getMarked()) {
 				
-				if(!minesweeper.getSquare(x, y).getMarked()) {
+				minesweeper.unmarkSquare(x, y);
+				square.setText(minesweeper.getSquare(x, y).mostrarValorCasilla());
+			}
+			else {
+				
+				try {
 					
 					minesweeper.markSquare(x, y);
 					square.setText("?");
-				}
-				else {
 					
-					square.setText(minesweeper.getSquare(x, y).mostrarValorCasilla());
-					minesweeper.unmarkSquare(x, y);
+				}
+				catch(AlreadySelectedException e) {
+					
+					ButtonType ok = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+					Alert alert = new Alert(AlertType.INFORMATION,"You can't mark an already open square", ok);
+					alert.setTitle(null);
+					alert.setHeaderText(null);
+					alert.show();
 				}
 			}
-			
-		}
-		else if(mouse == MouseButton.MIDDLE) {
-			
-			square.setText(minesweeper.getSquare(x, y).mostrarValorCasilla());
 		}
 	}
 	
