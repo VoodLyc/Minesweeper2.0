@@ -15,9 +15,11 @@ public class Main extends Application {
 			
 			Parent root = FXMLLoader.load(getClass().getResource("/application/Window.fxml"));
 			primaryStage.setTitle("Minesweeper");
-			primaryStage.setScene(new Scene(root, 800, 600));
-			primaryStage.setMinHeight(600);
-			primaryStage.setMinWidth(800);
+			Scene scene = new Scene(root);
+			primaryStage.setScene(scene);
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			primaryStage.setHeight(500);
+			primaryStage.setWidth(600);
 			primaryStage.centerOnScreen();
 			primaryStage.show();
 		} catch(Exception e) {

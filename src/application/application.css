@@ -1,1 +1,81 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.toolbar{
+	-fx-background-color: transparent;
+}
+.menuButton{
+	-fx-background-color: #dcdcdc;
+	-fx-font: bold 11pt "Arial";
+	-fx-text-fill: black;
+    -fx-border-color: black;
+    -fx-border-radius: 5;
+    }
+.square{
+	-fx-background-color: #dcdcdc;
+	-fx-font: bold 13pt "Arial";
+	-fx-text-fill: black;
+    -fx-border-color: black;
+    -fx-border-radius: 3;
+}
+.number0{
+	-fx-background-color: #dcdcdc;
+	-fx-font: bold 13pt "Arial";
+	-fx-text-fill: black;
+    -fx-border-color: black;
+    -fx-border-radius: 3;
+}
+.number1{
+	-fx-background-color: #dcdcdc;
+	-fx-font: bold 13pt "Arial";
+	-fx-text-fill: blue;
+    -fx-border-color: black;
+    -fx-border-radius: 3;
+}
+.number2{
+	-fx-background-color: #dcdcdc;
+	-fx-font: bold 13pt "Arial";
+	-fx-text-fill: green;
+    -fx-border-color: black;
+    -fx-border-radius: 3;
+}
+.number3{
+	-fx-background-color: #dcdcdc;
+	-fx-font: bold 13pt "Arial";
+	-fx-text-fill: red;
+    -fx-border-color: black;
+    -fx-border-radius: 3;
+}
+.number4{
+	-fx-background-color: #dcdcdc;
+	-fx-font: bold 13pt "Arial";
+	-fx-text-fill: darkblue;
+    -fx-border-color: black;
+    -fx-border-radius: 3;
+}
+.number5{
+	-fx-background-color: #dcdcdc;
+	-fx-font: bold 13pt "Arial";
+	-fx-text-fill: darkred;
+    -fx-border-color: black;
+    -fx-border-radius: 3;
+}
+.number6{
+	-fx-background-color: #dcdcdc;
+	-fx-font: bold 13pt "Arial";
+	-fx-text-fill: darkturquoise;
+    -fx-border-color: black;
+    -fx-border-radius: 3;
+}
+.number7{
+	-fx-background-color: #dcdcdc;
+	-fx-font: bold 13pt "Arial";
+	-fx-text-fill: black;
+    -fx-border-color: black;
+    -fx-border-radius: 3;
+}
+.number8{
+	-fx-background-color: #dcdcdc;
+	-fx-font: bold 13pt "Arial";
+	-fx-text-fill: grey;
+    -fx-border-color: black;
+    -fx-border-radius: 3;
+}

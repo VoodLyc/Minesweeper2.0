@@ -21,6 +21,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import modelo.AlreadySelectedException;
 import modelo.Buscaminas;
 
@@ -52,17 +53,37 @@ public class ControllerWindow implements Initializable {
 	
 	public void play(ActionEvent event) {
 		
+		Stage stage = (Stage) pane.getScene().getWindow();
+		
 		if(choice.getValue().equals("Easy")) {
 			
 			loadBoard(Buscaminas.FILAS_PRINCIPIANTE, Buscaminas.COLUMNAS_PRINCIPIANTE, Buscaminas.PRINCIPIANTE);
+			stage.setTitle("Minesweeper - Easy");
+			stage.setMaximized(false);
+			stage.setHeight(500);
+			stage.setWidth(600);
+			stage.setMinHeight(500);
+			stage.setMinWidth(600);
+			stage.centerOnScreen();
 		}
 		else if(choice.getValue().equals("Medium")) {
 			
 			loadBoard(Buscaminas.FILAS_INTERMEDIO, Buscaminas.COLUMNAS_INTERMEDIO, Buscaminas.INTERMEDIO);
+			stage.setTitle("Minesweeper - Medium");
+			stage.setMaximized(false);
+			stage.setMinHeight(750);
+			stage.setMinWidth(970);
+			stage.setMinHeight(750);
+			stage.setMinWidth(970);
+			stage.centerOnScreen();
 		}
 		else {
 			
 			loadBoard(Buscaminas.FILAS_EXPERTO, Buscaminas.COLUMNAS_EXPERTO, Buscaminas.EXPERTO);
+			stage.setTitle("Minesweeper - Hard");
+			stage.setMaximized(true);
+			stage.setMinHeight(stage.getHeight());
+			stage.setMinWidth(stage.getWidth());
 		}
 	}
 	
@@ -70,29 +91,31 @@ public class ControllerWindow implements Initializable {
 		
 		ToolBar toolBar = new ToolBar();
 		
-		Button solve = new Button("SOLVE THE GAME");
+		Button solve = new Button("Solve the game");
 		solve.setOnAction(event -> solve(rows, columns));
+		solve.getStyleClass().add("menuButton");
 		
-		Button clue = new Button("GIVE A CLUE");
+		Button clue = new Button("Give a clue");
 		clue.setOnAction(event -> giveClue(rows, columns, difficulty));
+		clue.getStyleClass().add("menuButton");
 		
-		Button back = new Button("RETURN TO MENU");
+		Button back = new Button("Return to menu");
 		back.setOnAction(event -> backToMenu());
+		back.getStyleClass().add("menuButton");
 		
-		Button restart = new Button("NEW GAME");
+		Button restart = new Button("New game");
 		restart.setOnAction(event -> restartGame(rows, columns, difficulty));
-		
-		toolBar.getItems().add(clue);
-		toolBar.getItems().add(solve);
-		toolBar.getItems().add(restart);
-		toolBar.getItems().add(back);
+		restart.getStyleClass().add("menuButton");
+
+		toolBar.getItems().addAll(clue, solve, restart, back);
+		toolBar.getStyleClass().add("toolbar");
 		
 		pane.setTop(toolBar);
 	}
 	
 	public void loadBoard(int rows, int columns, int difficulty) {
 		
-		loadButtons(rows, columns, difficulty);
+		loadButtons(rows, columns, difficulty);		
 		
 		grid = new GridPane();
 		pane.setCenter(grid);
@@ -123,6 +146,7 @@ public class ControllerWindow implements Initializable {
 				int x = j;
 				int y = i;
 				square.setOnMouseClicked(MouseEvent -> onClick(x, y, rows, columns, difficulty, square, MouseEvent));
+				square.getStyleClass().add("square");
 				grid.add(square, i, j);
 			}
 		}
@@ -130,18 +154,29 @@ public class ControllerWindow implements Initializable {
 	
 	public void solve(int rows, int columns) {
 		
-		ButtonType solve = new ButtonType("Solve", ButtonBar.ButtonData.OK_DONE);
-		ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-		Alert alert = new Alert(AlertType.WARNING, "The game will end and you lose, are you sure?", solve, cancel);
-		alert.setHeaderText(null);
-		alert.setTitle(null);
-		
-		Optional <ButtonType> action = alert.showAndWait();
-		
-		if(action.get() == solve) {
+		if(minesweeper.gano()) {
 			
-			solveGame(rows, columns);
-		}	
+			ButtonType ok = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+			Alert alert = new Alert(AlertType.WARNING, "The game is already solved", ok);
+			alert.setHeaderText(null);
+			alert.setTitle(null);
+			alert.show();
+		}
+		else {
+			
+			ButtonType solve = new ButtonType("Solve", ButtonBar.ButtonData.OK_DONE);
+			ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+			Alert alert = new Alert(AlertType.WARNING, "The game will end and you lose, are you sure?", solve, cancel);
+			alert.setHeaderText(null);
+			alert.setTitle(null);
+			
+			Optional <ButtonType> action = alert.showAndWait();
+			
+			if(action.get() == solve) {
+				
+				solveGame(rows, columns);
+			}	
+		}
 	}
 	
 	public void solveGame(int rows, int columns) {
@@ -173,6 +208,7 @@ public class ControllerWindow implements Initializable {
 				square.setMaxWidth(Double.MAX_VALUE);
 				square.setMaxHeight(Double.MAX_VALUE);
 				square.setOnAction(event -> loadMenu());
+				square.getStyleClass().add(setStyle(j, i));
 				grid.add(square, i, j);
 			}
 		}
@@ -180,7 +216,15 @@ public class ControllerWindow implements Initializable {
 	}
 	
 	public void loadMenu() {
-		
+			
+		Stage stage = (Stage) pane.getScene().getWindow();
+		stage.setTitle("Minesweeper");
+		stage.setMaximized(false);
+		stage.setHeight(500);
+		stage.setWidth(600);
+		stage.setMinHeight(500);
+		stage.setMinWidth(600);
+		stage.centerOnScreen();
 		pane.setCenter(box);
 		pane.setTop(null);
 		choice.getSelectionModel().select(0);
@@ -209,7 +253,7 @@ public class ControllerWindow implements Initializable {
 		
 		if(mouse == MouseButton.PRIMARY) {
 			
-			if(square.getText().equals(minesweeper.getSquare(x, y).mostrarValorCasilla())) {
+			if(!minesweeper.getSquare(x, y).getMarked()) {
 				
 				openSquare(x, y, rows, columns, difficulty, square);
 			}
@@ -244,6 +288,7 @@ public class ControllerWindow implements Initializable {
 	public void openSquare(int x, int y, int rows, int columns, int difficulty, Button square) {
 		
 		minesweeper.abrirCasilla(x, y);
+		square.getStyleClass().add("number" + minesweeper.getSquare(x, y).darValor());
 		square.setText(minesweeper.getSquare(x, y).mostrarValorCasilla());
 		
 		if(minesweeper.darPerdio()) {
@@ -252,7 +297,7 @@ public class ControllerWindow implements Initializable {
 			
 			ButtonType again = new ButtonType("Play again", ButtonBar.ButtonData.OK_DONE);
 			ButtonType menu = new ButtonType("Return to menu", ButtonBar.ButtonData.CANCEL_CLOSE);
-			Alert alert = new Alert(AlertType.INFORMATION, "You lost! do you want to play again?", again, menu);
+			Alert alert = new Alert(AlertType.INFORMATION, "You lost!", again, menu);
 			alert.setHeaderText(null);
 			alert.setTitle(null);
 			
@@ -270,9 +315,11 @@ public class ControllerWindow implements Initializable {
 		
 		else if(minesweeper.gano()) {
 			
+			solveGame(rows, columns);
+			
 			ButtonType again = new ButtonType("Play again", ButtonBar.ButtonData.OK_DONE);
 			ButtonType menu = new ButtonType("Return to menu", ButtonBar.ButtonData.CANCEL_CLOSE);
-			Alert alert = new Alert(AlertType.INFORMATION, "You win! do you want to play again?", again, menu);
+			Alert alert = new Alert(AlertType.INFORMATION, "You win!", again, menu);
 			alert.setHeaderText(null);
 			alert.setTitle(null);
 			
@@ -379,9 +426,26 @@ public class ControllerWindow implements Initializable {
 					int x = j;
 					int y = i;
 					square.setOnMouseClicked(MouseEvent -> onClick(x, y, rows, columns, difficulty, square, MouseEvent));
+					square.getStyleClass().add(setStyle(x,y));
 					grid.add(square, i, j);
 				}
 			}
 		}
+	}
+	
+	public String setStyle(int x, int y) {
+		
+		String style = "square";
+		
+		if(minesweeper.getSquare(x, y).darSeleccionada()) {
+			
+			style = "number" + minesweeper.getSquare(x, y).darValor();
+		}
+		if(minesweeper.getSquare(x, y).esMina()) {
+			
+			style = "square";
+		}
+		
+		return style;
 	}
 }
