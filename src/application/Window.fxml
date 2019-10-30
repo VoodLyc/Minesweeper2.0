@@ -17,7 +17,7 @@
             <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
          </padding>
          <children>
-            <Label text="Select the difficulty" />
+            <Label id="difficulty" text="Select the difficulty" />
             <ChoiceBox fx:id="choice" prefWidth="150.0" />
             <Button fx:id="play" mnemonicParsing="false" onAction="#play" text="Play" />
          </children>

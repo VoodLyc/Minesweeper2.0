@@ -1,78 +1,125 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-.toolbar{
-	-fx-background-color: transparent;
+.dialog {
+	-fx-background-color: #dcdcdc;
 }
-.menuButton{
+.dialog > *.buttonbar > *.container {
+	-fx-background-color: #dcdcdc;
+}
+.dialog > *.content.label {
+   -fx-text-fill:black;
+   -fx-font: bold 12pt "Arial";
+}
+.dialog *.button {
 	-fx-background-color: #dcdcdc;
 	-fx-font: bold 11pt "Arial";
 	-fx-text-fill: black;
     -fx-border-color: black;
-    -fx-border-radius: 5;
+    -fx-border-radius: 3;
+}
+.dialog:header *.header-panel {
+	-fx-background-color: #dcdcdc;
+}
+.choice-box {
+  -fx-mark-color: black;
+  -fx-border-color: black;
+  -fx-border-radius: 3;
+}
+.choice-box *.context-menu {
+	-fx-background-color: #dcdcdc;
+}
+.choice-box *.menu-item > *.label { 
+	-fx-font: bold 10pt "Arial";
+}
+.choice-box *.menu-item:focused > *.label { 
+	-fx-font: bold 10pt "Arial";
+}
+.choice-box > *.label { 
+	-fx-font: bold 10pt "Arial";
+}
+#difficulty {
+	-fx-font: bold 13pt "Arial";
+}
+#play {
+	-fx-background-color: #dcdcdc;
+	-fx-font: bold 11pt "Arial";
+	-fx-text-fill: black;
+    -fx-border-color: black;
+    -fx-border-radius: 3;
+}
+.toolbar {
+	-fx-background-color: transparent;
+}
+.menuButton {
+	-fx-background-color: #dcdcdc;
+	-fx-font: bold 11pt "Arial";
+	-fx-text-fill: black;
+    -fx-border-color: black;
+    -fx-border-radius: 3;
     }
-.square{
+.square {
 	-fx-background-color: #dcdcdc;
 	-fx-font: bold 13pt "Arial";
 	-fx-text-fill: black;
     -fx-border-color: black;
     -fx-border-radius: 3;
 }
-.number0{
+.number0 {
 	-fx-background-color: #dcdcdc;
 	-fx-font: bold 13pt "Arial";
 	-fx-text-fill: black;
     -fx-border-color: black;
     -fx-border-radius: 3;
 }
-.number1{
+.number1 {
 	-fx-background-color: #dcdcdc;
 	-fx-font: bold 13pt "Arial";
 	-fx-text-fill: blue;
     -fx-border-color: black;
     -fx-border-radius: 3;
 }
-.number2{
+.number2 {
 	-fx-background-color: #dcdcdc;
 	-fx-font: bold 13pt "Arial";
 	-fx-text-fill: green;
     -fx-border-color: black;
     -fx-border-radius: 3;
 }
-.number3{
+.number3 {
 	-fx-background-color: #dcdcdc;
 	-fx-font: bold 13pt "Arial";
 	-fx-text-fill: red;
     -fx-border-color: black;
     -fx-border-radius: 3;
 }
-.number4{
+.number4 {
 	-fx-background-color: #dcdcdc;
 	-fx-font: bold 13pt "Arial";
 	-fx-text-fill: darkblue;
     -fx-border-color: black;
     -fx-border-radius: 3;
 }
-.number5{
+.number5 {
 	-fx-background-color: #dcdcdc;
 	-fx-font: bold 13pt "Arial";
 	-fx-text-fill: darkred;
     -fx-border-color: black;
     -fx-border-radius: 3;
 }
-.number6{
+.number6 {
 	-fx-background-color: #dcdcdc;
 	-fx-font: bold 13pt "Arial";
 	-fx-text-fill: darkturquoise;
     -fx-border-color: black;
     -fx-border-radius: 3;
 }
-.number7{
+.number7 {
 	-fx-background-color: #dcdcdc;
 	-fx-font: bold 13pt "Arial";
 	-fx-text-fill: black;
     -fx-border-color: black;
     -fx-border-radius: 3;
 }
-.number8{
+.number8 {
 	-fx-background-color: #dcdcdc;
 	-fx-font: bold 13pt "Arial";
 	-fx-text-fill: grey;

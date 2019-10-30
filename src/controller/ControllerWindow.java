@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -160,6 +161,10 @@ public class ControllerWindow implements Initializable {
 			Alert alert = new Alert(AlertType.WARNING, "The game is already solved", ok);
 			alert.setHeaderText(null);
 			alert.setTitle(null);
+			DialogPane dialogPane = alert.getDialogPane();
+			dialogPane.getStylesheets().add(
+			   getClass().getResource("/application/application.css").toExternalForm());
+			dialogPane.getStyleClass().add("dialog");
 			alert.show();
 		}
 		else {
@@ -169,6 +174,10 @@ public class ControllerWindow implements Initializable {
 			Alert alert = new Alert(AlertType.WARNING, "The game will end and you lose, are you sure?", solve, cancel);
 			alert.setHeaderText(null);
 			alert.setTitle(null);
+			DialogPane dialogPane = alert.getDialogPane();
+			dialogPane.getStylesheets().add(
+			   getClass().getResource("/application/application.css").toExternalForm());
+			dialogPane.getStyleClass().add("dialog");
 			
 			Optional <ButtonType> action = alert.showAndWait();
 			
@@ -280,6 +289,10 @@ public class ControllerWindow implements Initializable {
 					alert.setTitle(null);
 					alert.setHeaderText(null);
 					alert.show();
+					DialogPane dialogPane = alert.getDialogPane();
+					dialogPane.getStylesheets().add(
+					   getClass().getResource("/application/application.css").toExternalForm());
+					dialogPane.getStyleClass().add("dialog");
 				}
 			}
 		}
@@ -300,6 +313,10 @@ public class ControllerWindow implements Initializable {
 			Alert alert = new Alert(AlertType.INFORMATION, "You lost!", again, menu);
 			alert.setHeaderText(null);
 			alert.setTitle(null);
+			DialogPane dialogPane = alert.getDialogPane();
+			dialogPane.getStylesheets().add(
+			   getClass().getResource("/application/application.css").toExternalForm());
+			dialogPane.getStyleClass().add("dialog");
 			
 			Optional <ButtonType> action = alert.showAndWait();
 			
@@ -322,6 +339,10 @@ public class ControllerWindow implements Initializable {
 			Alert alert = new Alert(AlertType.INFORMATION, "You win!", again, menu);
 			alert.setHeaderText(null);
 			alert.setTitle(null);
+			DialogPane dialogPane = alert.getDialogPane();
+			dialogPane.getStylesheets().add(
+			   getClass().getResource("/application/application.css").toExternalForm());
+			dialogPane.getStyleClass().add("dialog");
 			
 			Optional <ButtonType> action = alert.showAndWait();
 			
@@ -350,7 +371,13 @@ public class ControllerWindow implements Initializable {
 			Alert alert = new Alert(AlertType.WARNING, "All current progress will be lost, are you sure?", accept, cancel);
 			alert.setTitle(null);
 			alert.setHeaderText(null);
+			DialogPane dialogPane = alert.getDialogPane();
+			dialogPane.getStylesheets().add(
+			   getClass().getResource("/application/application.css").toExternalForm());
+			dialogPane.getStyleClass().add("dialog");
+			
 			Optional <ButtonType> action = alert.showAndWait();
+			
 			
 			if(action.get() == accept) {
 				
@@ -372,6 +399,11 @@ public class ControllerWindow implements Initializable {
 			Alert alert = new Alert(AlertType.WARNING, "All current progress will be lost, are you sure?", accept, cancel);
 			alert.setTitle(null);
 			alert.setHeaderText(null);
+			DialogPane dialogPane = alert.getDialogPane();
+			dialogPane.getStylesheets().add(
+			   getClass().getResource("/application/application.css").toExternalForm());
+			dialogPane.getStyleClass().add("dialog");
+			
 			Optional <ButtonType> action = alert.showAndWait();
 			
 			if(action.get() == accept) {
@@ -389,6 +421,10 @@ public class ControllerWindow implements Initializable {
 			Alert alert = new Alert(AlertType.INFORMATION, "There are no clues to give", accept);
 			alert.setTitle(null);
 			alert.setHeaderText(null);
+			DialogPane dialogPane = alert.getDialogPane();
+			dialogPane.getStylesheets().add(
+			   getClass().getResource("/application/application.css").toExternalForm());
+			dialogPane.getStyleClass().add("dialog");
 			alert.show();
 		}
 		else {

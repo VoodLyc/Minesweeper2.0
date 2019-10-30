@@ -22,6 +22,7 @@ public class Main extends Application {
 			primaryStage.setWidth(600);
 			primaryStage.centerOnScreen();
 			primaryStage.show();
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
