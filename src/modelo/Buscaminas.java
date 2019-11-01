@@ -288,6 +288,7 @@ public class Buscaminas {
 			for(int y = 0; y < casillas[0].length; y++){
 
 					casillas[x][y].destapar();
+					casillas[x][y].setMarked(false);
 				}
 			}
 		}
@@ -386,7 +387,7 @@ public class Buscaminas {
 		for(int x = 0; x < casillas.length && running == true; x++){
 			for(int y = 0; y < casillas[0].length && running == true; y++){
 
-				if(casillas[x][y].esMina() != true && casillas[x][y].darSeleccionada() == false && casillas[x][y].darValor() > 0){
+				if(casillas[x][y].esMina() != true && casillas[x][y].darSeleccionada() == false && casillas[x][y].darValor() > 0 && !casillas[x][y].getMarked()){
 
 					casillas[x][y].destapar();
 					unmarkSquare(x,y);

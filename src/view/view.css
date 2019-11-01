@@ -1,6 +1,8 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 .dialog {
 	-fx-background-color: #dcdcdc;
+	-fx-border-color: black;
+  	-fx-border-radius: 3;
 }
 .dialog > *.buttonbar > *.container {
 	-fx-background-color: #dcdcdc;
@@ -56,6 +58,33 @@
     -fx-border-color: black;
     -fx-border-radius: 3;
     }
+.flag{
+	-fx-background-color: #dcdcdc;
+	-fx-background-size:100% 100%;
+	-fx-background-image:url(../images/flag.png);
+	-fx-font: bold 11pt "Arial";
+	-fx-text-fill: transparent;
+    -fx-border-color: black;
+    -fx-border-radius: 3;
+}
+.mine{
+	-fx-background-color: #dcdcdc;
+	-fx-background-size:100% 100%;
+	-fx-background-image:url(../images/mine.png);
+	-fx-font: bold 11pt "Arial";
+	-fx-text-fill: transparent;
+    -fx-border-color: black;
+    -fx-border-radius: 3;
+}
+.x{
+	-fx-background-color: #dcdcdc;
+	-fx-background-size:100% 100%;
+	-fx-background-image:url(../images/x.png);
+	-fx-font: bold 11pt "Arial";
+	-fx-text-fill: transparent;
+    -fx-border-color: black;
+    -fx-border-radius: 3;
+}
 .square {
 	-fx-background-color: #dcdcdc;
 	-fx-font: bold 13pt "Arial";

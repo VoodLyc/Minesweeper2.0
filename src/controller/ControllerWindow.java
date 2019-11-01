@@ -12,6 +12,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert;
@@ -43,7 +44,7 @@ public class ControllerWindow implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		start();	
+		start();
 	}
 	
 	public void start() {
@@ -72,8 +73,8 @@ public class ControllerWindow implements Initializable {
 			loadBoard(Buscaminas.FILAS_INTERMEDIO, Buscaminas.COLUMNAS_INTERMEDIO, Buscaminas.INTERMEDIO);
 			stage.setTitle("Minesweeper - Medium");
 			stage.setMaximized(false);
-			stage.setMinHeight(750);
-			stage.setMinWidth(970);
+			stage.setHeight(750);
+			stage.setWidth(970);
 			stage.setMinHeight(750);
 			stage.setMinWidth(970);
 			stage.centerOnScreen();
@@ -83,8 +84,9 @@ public class ControllerWindow implements Initializable {
 			loadBoard(Buscaminas.FILAS_EXPERTO, Buscaminas.COLUMNAS_EXPERTO, Buscaminas.EXPERTO);
 			stage.setTitle("Minesweeper - Hard");
 			stage.setMaximized(true);
-			stage.setMinHeight(stage.getHeight());
-			stage.setMinWidth(stage.getWidth());
+			stage.setMinHeight(750);
+			stage.setMinWidth(1200);
+			stage.centerOnScreen();
 		}
 	}
 	
@@ -161,9 +163,11 @@ public class ControllerWindow implements Initializable {
 			Alert alert = new Alert(AlertType.WARNING, "The game is already solved", ok);
 			alert.setHeaderText(null);
 			alert.setTitle(null);
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image("images/mine.png"));
 			DialogPane dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(
-			   getClass().getResource("/application/application.css").toExternalForm());
+			   getClass().getResource("/view/view.css").toExternalForm());
 			dialogPane.getStyleClass().add("dialog");
 			alert.show();
 		}
@@ -174,9 +178,11 @@ public class ControllerWindow implements Initializable {
 			Alert alert = new Alert(AlertType.WARNING, "The game will end and you lose, are you sure?", solve, cancel);
 			alert.setHeaderText(null);
 			alert.setTitle(null);
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image("images/mine.png"));
 			DialogPane dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(
-			   getClass().getResource("/application/application.css").toExternalForm());
+			   getClass().getResource("/view/view.css").toExternalForm());
 			dialogPane.getStyleClass().add("dialog");
 			
 			Optional <ButtonType> action = alert.showAndWait();
@@ -186,6 +192,44 @@ public class ControllerWindow implements Initializable {
 				solveGame(rows, columns);
 			}	
 		}
+	}
+	
+	public void lose(int rows, int columns, int x, int y) {
+		
+		minesweeper.resolver();
+		
+		grid = new GridPane();
+		pane.setCenter(grid);
+		
+		for(int i = 0; i < columns; i++) {
+			
+			ColumnConstraints column = new ColumnConstraints();
+			column.setHgrow(Priority.ALWAYS);
+			grid.getColumnConstraints().add(column);
+		}
+		
+		for(int i = 0; i < rows; i++) {
+			
+			RowConstraints row = new RowConstraints();
+			row.setVgrow(Priority.ALWAYS);
+			grid.getRowConstraints().add(row);
+		}
+		
+		for(int i = 0; i < columns; i++) {
+			
+			for(int j = 0; j < rows; j++) {
+				
+				Button square = new Button(minesweeper.getSquare(j, i).mostrarValorCasilla());
+				square.setMaxWidth(Double.MAX_VALUE);
+				square.setMaxHeight(Double.MAX_VALUE);
+				square.setOnAction(event -> loadMenu());
+				square.getStyleClass().add(setStyle(j, i));
+				if(j == x && i == y) {
+					square.getStyleClass().add("x");
+				}
+				grid.add(square, i, j);
+			}
+		}	
 	}
 	
 	public void solveGame(int rows, int columns) {
@@ -262,9 +306,38 @@ public class ControllerWindow implements Initializable {
 		
 		if(mouse == MouseButton.PRIMARY) {
 			
-			if(!minesweeper.getSquare(x, y).getMarked()) {
+			if(minesweeper.getSquare(x, y).darSeleccionada()) {
+				
+				ButtonType ok = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+				Alert alert = new Alert(AlertType.INFORMATION, "You can't open an already open square", ok);
+				alert.setHeaderText(null);
+				alert.setTitle(null);
+				Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+				stage.getIcons().add(new Image("images/mine.png"));
+				DialogPane dialogPane = alert.getDialogPane();
+				dialogPane.getStylesheets().add(
+				   getClass().getResource("/view/view.css").toExternalForm());
+				dialogPane.getStyleClass().add("dialog");
+				alert.show();	
+				
+			}
+			else if(!minesweeper.getSquare(x, y).getMarked()) {
 				
 				openSquare(x, y, rows, columns, difficulty, square);
+			}
+			else {
+				
+				ButtonType ok = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+				Alert alert = new Alert(AlertType.INFORMATION, "You can't open a marked square", ok);
+				alert.setHeaderText(null);
+				alert.setTitle(null);
+				Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+				stage.getIcons().add(new Image("images/mine.png"));
+				DialogPane dialogPane = alert.getDialogPane();
+				dialogPane.getStylesheets().add(
+				   getClass().getResource("/view/view.css").toExternalForm());
+				dialogPane.getStyleClass().add("dialog");
+				alert.show();	
 			}
 		}
 		else if(mouse == MouseButton.SECONDARY) {
@@ -273,13 +346,16 @@ public class ControllerWindow implements Initializable {
 				
 				minesweeper.unmarkSquare(x, y);
 				square.setText(minesweeper.getSquare(x, y).mostrarValorCasilla());
+				square.getStyleClass().remove("flag");
+				square.getStyleClass().add(setStyle(x,y));
 			}
 			else {
 				
 				try {
 					
 					minesweeper.markSquare(x, y);
-					square.setText("?");
+					square.setText("");
+					square.getStyleClass().add("flag");
 					
 				}
 				catch(AlreadySelectedException e) {
@@ -288,11 +364,13 @@ public class ControllerWindow implements Initializable {
 					Alert alert = new Alert(AlertType.INFORMATION,"You can't mark an already open square", ok);
 					alert.setTitle(null);
 					alert.setHeaderText(null);
-					alert.show();
+					Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+					stage.getIcons().add(new Image("images/mine.png"));
 					DialogPane dialogPane = alert.getDialogPane();
 					dialogPane.getStylesheets().add(
-					   getClass().getResource("/application/application.css").toExternalForm());
+					   getClass().getResource("/view/view.css").toExternalForm());
 					dialogPane.getStyleClass().add("dialog");
+					alert.show();
 				}
 			}
 		}
@@ -306,16 +384,18 @@ public class ControllerWindow implements Initializable {
 		
 		if(minesweeper.darPerdio()) {
 			
-			solveGame(rows, columns);
+			lose(rows, columns, x, y);
 			
 			ButtonType again = new ButtonType("Play again", ButtonBar.ButtonData.OK_DONE);
 			ButtonType menu = new ButtonType("Return to menu", ButtonBar.ButtonData.CANCEL_CLOSE);
 			Alert alert = new Alert(AlertType.INFORMATION, "You lost!", again, menu);
 			alert.setHeaderText(null);
 			alert.setTitle(null);
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image("images/mine.png"));
 			DialogPane dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(
-			   getClass().getResource("/application/application.css").toExternalForm());
+			   getClass().getResource("/view/view.css").toExternalForm());
 			dialogPane.getStyleClass().add("dialog");
 			
 			Optional <ButtonType> action = alert.showAndWait();
@@ -339,9 +419,11 @@ public class ControllerWindow implements Initializable {
 			Alert alert = new Alert(AlertType.INFORMATION, "You win!", again, menu);
 			alert.setHeaderText(null);
 			alert.setTitle(null);
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image("images/mine.png"));
 			DialogPane dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(
-			   getClass().getResource("/application/application.css").toExternalForm());
+			   getClass().getResource("/view/view.css").toExternalForm());
 			dialogPane.getStyleClass().add("dialog");
 			
 			Optional <ButtonType> action = alert.showAndWait();
@@ -371,9 +453,11 @@ public class ControllerWindow implements Initializable {
 			Alert alert = new Alert(AlertType.WARNING, "All current progress will be lost, are you sure?", accept, cancel);
 			alert.setTitle(null);
 			alert.setHeaderText(null);
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image("images/mine.png"));
 			DialogPane dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(
-			   getClass().getResource("/application/application.css").toExternalForm());
+			   getClass().getResource("/view/view.css").toExternalForm());
 			dialogPane.getStyleClass().add("dialog");
 			
 			Optional <ButtonType> action = alert.showAndWait();
@@ -399,9 +483,11 @@ public class ControllerWindow implements Initializable {
 			Alert alert = new Alert(AlertType.WARNING, "All current progress will be lost, are you sure?", accept, cancel);
 			alert.setTitle(null);
 			alert.setHeaderText(null);
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image("images/mine.png"));
 			DialogPane dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(
-			   getClass().getResource("/application/application.css").toExternalForm());
+			   getClass().getResource("/view/view.css").toExternalForm());
 			dialogPane.getStyleClass().add("dialog");
 			
 			Optional <ButtonType> action = alert.showAndWait();
@@ -421,9 +507,11 @@ public class ControllerWindow implements Initializable {
 			Alert alert = new Alert(AlertType.INFORMATION, "There are no clues to give", accept);
 			alert.setTitle(null);
 			alert.setHeaderText(null);
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image("images/mine.png"));
 			DialogPane dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(
-			   getClass().getResource("/application/application.css").toExternalForm());
+			   getClass().getResource("/view/view.css").toExternalForm());
 			dialogPane.getStyleClass().add("dialog");
 			alert.show();
 		}
@@ -454,7 +542,7 @@ public class ControllerWindow implements Initializable {
 					
 					if(minesweeper.getSquare(j, i).getMarked()) {
 						
-						square.setText("?");
+						square.setText("");
 					}
 					
 					square.setMaxWidth(Double.MAX_VALUE);
@@ -463,6 +551,10 @@ public class ControllerWindow implements Initializable {
 					int y = i;
 					square.setOnMouseClicked(MouseEvent -> onClick(x, y, rows, columns, difficulty, square, MouseEvent));
 					square.getStyleClass().add(setStyle(x,y));
+					if(minesweeper.getSquare(x, y).esMina()) {
+						square.getStyleClass().remove("mine");
+						square.getStyleClass().add("square");
+					}
 					grid.add(square, i, j);
 				}
 			}
@@ -477,9 +569,13 @@ public class ControllerWindow implements Initializable {
 			
 			style = "number" + minesweeper.getSquare(x, y).darValor();
 		}
-		if(minesweeper.getSquare(x, y).esMina()) {
+		if(minesweeper.getSquare(x, y).esMina() && minesweeper.getSquare(x, y).darSeleccionada()) {
 			
-			style = "square";
+			style = "mine";
+		}
+		if(minesweeper.getSquare(x, y).getMarked()) {
+			
+			style = "flag";
 		}
 		
 		return style;
