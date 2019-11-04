@@ -18,7 +18,7 @@ public class Main extends Application {
 			primaryStage.setTitle("Minesweeper");
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
-			primaryStage.getIcons().add(new Image("images/mine.png"));
+			primaryStage.getIcons().add(new Image("file:images/icon.png"));
 			scene.getStylesheets().add(getClass().getResource("view.css").toExternalForm());
 			primaryStage.setHeight(500);
 			primaryStage.setWidth(600);

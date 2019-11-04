@@ -23,6 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import modelo.AlreadySelectedException;
 import modelo.Buscaminas;
@@ -51,6 +52,8 @@ public class ControllerWindow implements Initializable {
 		
 		choice.getItems().addAll("Easy", "Medium", "Hard");
 		choice.getSelectionModel().select(0);
+		AudioClip audio = new AudioClip("file:sounds/selection.wav");
+		choice.setOnAction(ActionEvent -> audio.play());
 	}
 	
 	public void play(ActionEvent event) {
@@ -88,6 +91,9 @@ public class ControllerWindow implements Initializable {
 			stage.setMinWidth(1200);
 			stage.centerOnScreen();
 		}
+		
+		AudioClip audio = new AudioClip("file:sounds/selection.wav");
+		audio.play();
 	}
 	
 	public void loadButtons(int rows, int columns, int difficulty) {
@@ -157,6 +163,9 @@ public class ControllerWindow implements Initializable {
 	
 	public void solve(int rows, int columns) {
 		
+		AudioClip audio = new AudioClip("file:sounds/selection.wav");
+		audio.play();
+		
 		if(minesweeper.gano()) {
 			
 			ButtonType ok = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
@@ -164,7 +173,7 @@ public class ControllerWindow implements Initializable {
 			alert.setHeaderText(null);
 			alert.setTitle(null);
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image("images/mine.png"));
+			stage.getIcons().add(new Image("file:images/icon.png"));
 			DialogPane dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(
 			   getClass().getResource("/view/view.css").toExternalForm());
@@ -179,7 +188,7 @@ public class ControllerWindow implements Initializable {
 			alert.setHeaderText(null);
 			alert.setTitle(null);
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image("images/mine.png"));
+			stage.getIcons().add(new Image("file:images/icon.png"));
 			DialogPane dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(
 			   getClass().getResource("/view/view.css").toExternalForm());
@@ -265,7 +274,6 @@ public class ControllerWindow implements Initializable {
 				grid.add(square, i, j);
 			}
 		}
-		
 	}
 	
 	public void loadMenu() {
@@ -313,7 +321,7 @@ public class ControllerWindow implements Initializable {
 				alert.setHeaderText(null);
 				alert.setTitle(null);
 				Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-				stage.getIcons().add(new Image("images/mine.png"));
+				stage.getIcons().add(new Image("file:images/icon.png"));
 				DialogPane dialogPane = alert.getDialogPane();
 				dialogPane.getStylesheets().add(
 				   getClass().getResource("/view/view.css").toExternalForm());
@@ -332,7 +340,7 @@ public class ControllerWindow implements Initializable {
 				alert.setHeaderText(null);
 				alert.setTitle(null);
 				Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-				stage.getIcons().add(new Image("images/mine.png"));
+				stage.getIcons().add(new Image("file:images/icon.png"));
 				DialogPane dialogPane = alert.getDialogPane();
 				dialogPane.getStylesheets().add(
 				   getClass().getResource("/view/view.css").toExternalForm());
@@ -348,6 +356,8 @@ public class ControllerWindow implements Initializable {
 				square.setText(minesweeper.getSquare(x, y).mostrarValorCasilla());
 				square.getStyleClass().remove("flag");
 				square.getStyleClass().add(setStyle(x,y));
+				AudioClip audio = new AudioClip("file:sounds/mark.wav");
+				audio.play();
 			}
 			else {
 				
@@ -356,6 +366,8 @@ public class ControllerWindow implements Initializable {
 					minesweeper.markSquare(x, y);
 					square.setText("");
 					square.getStyleClass().add("flag");
+					AudioClip audio = new AudioClip("file:sounds/mark.wav");
+					audio.play();
 					
 				}
 				catch(AlreadySelectedException e) {
@@ -365,7 +377,7 @@ public class ControllerWindow implements Initializable {
 					alert.setTitle(null);
 					alert.setHeaderText(null);
 					Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-					stage.getIcons().add(new Image("images/mine.png"));
+					stage.getIcons().add(new Image("file:images/icon.png"));
 					DialogPane dialogPane = alert.getDialogPane();
 					dialogPane.getStylesheets().add(
 					   getClass().getResource("/view/view.css").toExternalForm());
@@ -388,11 +400,11 @@ public class ControllerWindow implements Initializable {
 			
 			ButtonType again = new ButtonType("Play again", ButtonBar.ButtonData.OK_DONE);
 			ButtonType menu = new ButtonType("Return to menu", ButtonBar.ButtonData.CANCEL_CLOSE);
-			Alert alert = new Alert(AlertType.INFORMATION, "You lost!", again, menu);
+			Alert alert = new Alert(AlertType.INFORMATION, "You lose!", again, menu);
 			alert.setHeaderText(null);
 			alert.setTitle(null);
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image("images/mine.png"));
+			stage.getIcons().add(new Image("file:images/icon.png"));
 			DialogPane dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(
 			   getClass().getResource("/view/view.css").toExternalForm());
@@ -408,11 +420,8 @@ public class ControllerWindow implements Initializable {
 				
 				loadMenu();
 			}
-		}
-		
+		}	
 		else if(minesweeper.gano()) {
-			
-			solveGame(rows, columns);
 			
 			ButtonType again = new ButtonType("Play again", ButtonBar.ButtonData.OK_DONE);
 			ButtonType menu = new ButtonType("Return to menu", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -420,7 +429,7 @@ public class ControllerWindow implements Initializable {
 			alert.setHeaderText(null);
 			alert.setTitle(null);
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image("images/mine.png"));
+			stage.getIcons().add(new Image("file:images/icon.png"));
 			DialogPane dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(
 			   getClass().getResource("/view/view.css").toExternalForm());
@@ -436,11 +445,18 @@ public class ControllerWindow implements Initializable {
 				
 				loadMenu();
 			}
+		}
+		else {
 			
+			AudioClip audio = new AudioClip("file:sounds/open.wav");
+			audio.play();
 		}
 	}
 	
 	public void restartGame(int rows, int columns, int difficulty) {
+		
+		AudioClip audio = new AudioClip("file:sounds/selection.wav");
+		audio.play();
 		
 		if(minesweeper.gano()) {
 			
@@ -454,7 +470,7 @@ public class ControllerWindow implements Initializable {
 			alert.setTitle(null);
 			alert.setHeaderText(null);
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image("images/mine.png"));
+			stage.getIcons().add(new Image("file:images/icon.png"));
 			DialogPane dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(
 			   getClass().getResource("/view/view.css").toExternalForm());
@@ -472,6 +488,9 @@ public class ControllerWindow implements Initializable {
 	
 	public void backToMenu() {
 		
+		AudioClip audio = new AudioClip("file:sounds/selection.wav");
+		audio.play();
+		
 		if(minesweeper.gano()) {
 			
 			loadMenu();
@@ -484,7 +503,7 @@ public class ControllerWindow implements Initializable {
 			alert.setTitle(null);
 			alert.setHeaderText(null);
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image("images/mine.png"));
+			stage.getIcons().add(new Image("file:images/icon.png"));
 			DialogPane dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(
 			   getClass().getResource("/view/view.css").toExternalForm());
@@ -501,6 +520,9 @@ public class ControllerWindow implements Initializable {
 	
 	public void giveClue(int rows, int columns, int difficulty) {
 		
+		AudioClip audio = new AudioClip("file:sounds/selection.wav");
+		audio.play();
+		
 		if(minesweeper.darPista().equals("")) {
 			
 			ButtonType accept = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
@@ -508,7 +530,7 @@ public class ControllerWindow implements Initializable {
 			alert.setTitle(null);
 			alert.setHeaderText(null);
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image("images/mine.png"));
+			stage.getIcons().add(new Image("file:images/icon.png"));
 			DialogPane dialogPane = alert.getDialogPane();
 			dialogPane.getStylesheets().add(
 			   getClass().getResource("/view/view.css").toExternalForm());
