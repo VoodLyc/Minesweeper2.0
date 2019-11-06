@@ -178,7 +178,9 @@ public class ControllerWindow implements Initializable {
 			dialogPane.getStylesheets().add(
 			   getClass().getResource("/view/view.css").toExternalForm());
 			dialogPane.getStyleClass().add("dialog");
-			alert.show();
+			alert.showAndWait();
+			audio = new AudioClip("file:sounds/accept.wav");
+			audio.play();
 		}
 		else {
 			
@@ -199,7 +201,10 @@ public class ControllerWindow implements Initializable {
 			if(action.get() == solve) {
 				
 				solveGame(rows, columns);
-			}	
+			}
+			
+			audio = new AudioClip("file:sounds/accept.wav");
+			audio.play();
 		}
 	}
 	
@@ -311,6 +316,7 @@ public class ControllerWindow implements Initializable {
 	public void onClick(int x, int y, int rows, int columns, int difficulty, Button square, MouseEvent event) {
 		
 		MouseButton mouse = event.getButton();
+		AudioClip audio;
 		
 		if(mouse == MouseButton.PRIMARY) {
 			
@@ -326,7 +332,9 @@ public class ControllerWindow implements Initializable {
 				dialogPane.getStylesheets().add(
 				   getClass().getResource("/view/view.css").toExternalForm());
 				dialogPane.getStyleClass().add("dialog");
-				alert.show();	
+				alert.showAndWait();
+				audio = new AudioClip("file:sounds/accept.wav");
+				audio.play();
 				
 			}
 			else if(!minesweeper.getSquare(x, y).getMarked()) {
@@ -345,7 +353,9 @@ public class ControllerWindow implements Initializable {
 				dialogPane.getStylesheets().add(
 				   getClass().getResource("/view/view.css").toExternalForm());
 				dialogPane.getStyleClass().add("dialog");
-				alert.show();	
+				alert.showAndWait();
+				audio = new AudioClip("file:sounds/accept.wav");
+				audio.play();
 			}
 		}
 		else if(mouse == MouseButton.SECONDARY) {
@@ -356,7 +366,7 @@ public class ControllerWindow implements Initializable {
 				square.setText(minesweeper.getSquare(x, y).mostrarValorCasilla());
 				square.getStyleClass().remove("flag");
 				square.getStyleClass().add(setStyle(x,y));
-				AudioClip audio = new AudioClip("file:sounds/mark.wav");
+				audio = new AudioClip("file:sounds/mark.wav");
 				audio.play();
 			}
 			else {
@@ -366,7 +376,7 @@ public class ControllerWindow implements Initializable {
 					minesweeper.markSquare(x, y);
 					square.setText("");
 					square.getStyleClass().add("flag");
-					AudioClip audio = new AudioClip("file:sounds/mark.wav");
+					audio = new AudioClip("file:sounds/mark.wav");
 					audio.play();
 					
 				}
@@ -382,7 +392,9 @@ public class ControllerWindow implements Initializable {
 					dialogPane.getStylesheets().add(
 					   getClass().getResource("/view/view.css").toExternalForm());
 					dialogPane.getStyleClass().add("dialog");
-					alert.show();
+					alert.showAndWait();
+					audio = new AudioClip("file:sounds/accept.wav");
+					audio.play();
 				}
 			}
 		}
@@ -393,8 +405,12 @@ public class ControllerWindow implements Initializable {
 		minesweeper.abrirCasilla(x, y);
 		square.getStyleClass().add("number" + minesweeper.getSquare(x, y).darValor());
 		square.setText(minesweeper.getSquare(x, y).mostrarValorCasilla());
+		AudioClip audio;
 		
 		if(minesweeper.darPerdio()) {
+			
+			audio = new AudioClip("file:sounds/lose.wav");
+			audio.play();
 			
 			lose(rows, columns, x, y);
 			
@@ -420,8 +436,14 @@ public class ControllerWindow implements Initializable {
 				
 				loadMenu();
 			}
+			
+			audio = new AudioClip("file:sounds/accept.wav");
+			audio.play();
 		}	
 		else if(minesweeper.gano()) {
+			
+			audio = new AudioClip("file:sounds/win.wav");
+			audio.play();
 			
 			ButtonType again = new ButtonType("Play again", ButtonBar.ButtonData.OK_DONE);
 			ButtonType menu = new ButtonType("Return to menu", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -445,10 +467,13 @@ public class ControllerWindow implements Initializable {
 				
 				loadMenu();
 			}
+			
+			audio = new AudioClip("file:sounds/accept.wav");
+			audio.play();
 		}
 		else {
 			
-			AudioClip audio = new AudioClip("file:sounds/open.wav");
+			audio = new AudioClip("file:sounds/open.wav");
 			audio.play();
 		}
 	}
@@ -482,7 +507,10 @@ public class ControllerWindow implements Initializable {
 			if(action.get() == accept) {
 				
 				loadBoard(rows, columns, difficulty);
-			}	
+			}
+			
+			audio = new AudioClip("file:sounds/accept.wav");
+			audio.play();
 		}
 	}
 	
@@ -515,6 +543,9 @@ public class ControllerWindow implements Initializable {
 				
 				loadMenu();
 			}
+			
+			audio = new AudioClip("file:sounds/accept.wav");
+			audio.play();
 		}
 	}
 	
@@ -535,7 +566,9 @@ public class ControllerWindow implements Initializable {
 			dialogPane.getStylesheets().add(
 			   getClass().getResource("/view/view.css").toExternalForm());
 			dialogPane.getStyleClass().add("dialog");
-			alert.show();
+			alert.showAndWait();
+			audio = new AudioClip("file:sounds/accept.wav");
+			audio.play();
 		}
 		else {
 			
